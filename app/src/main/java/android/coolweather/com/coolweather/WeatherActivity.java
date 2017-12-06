@@ -6,11 +6,13 @@ import android.coolweather.com.coolweather.gson.Weather;
 import android.coolweather.com.coolweather.util.HttpUtil;
 import android.coolweather.com.coolweather.util.Utility;
 import android.preference.PreferenceManager;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telecom.Call;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -39,7 +41,7 @@ public class WeatherActivity extends AppCompatActivity {
     private TextView comfortText;
     private TextView carwashText;
     private TextView sportText;
-   // private String mWeatherId;
+    private String mWeatherId;
     public SwipeRefreshLayout swipeRedresh;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -65,7 +67,13 @@ public class WeatherActivity extends AppCompatActivity {
         carwashText = (TextView) findViewById(R.id.car_wash_text);
         sportText = (TextView) findViewById(R.id.sport_text);
         navButton =(Button)findViewById(R.id.nav_button);
-        drawerlayout = (DrawerLayout)findViewById(R.id.drwa)
+        drawerlayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        navButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerlayout.openDrawer(GravityCompat.START);
+            }
+        });
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String weatherString = prefs.getString("weather_id", null);
         final String weatherId;
@@ -117,8 +125,9 @@ public class WeatherActivity extends AppCompatActivity {
                             showWeatherInfo(weather);
                         } else {
                             Toast.makeText(WeatherActivity.this, "获取天气信息失败", Toast.LENGTH_SHORT).show();
-                            swipeRedresh.setRefreshing(false);
+
                         }
+                        swipeRedresh.setRefreshing(false);
                     }
                 });
             }
